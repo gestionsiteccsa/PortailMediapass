@@ -8,6 +8,7 @@ from django.urls import path
 
 from home.views import (
     catalogue,
+    changer_mot_de_passe_view,
     home,
     login_view,
     logout_view,
@@ -26,6 +27,7 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("compte/", mon_compte, name="mon_compte"),
+    path("changer-mot-de-passe/", changer_mot_de_passe_view, name="changer_mot_de_passe"),
     path("pmb-diagnostic/", pmb_diagnostic, name="pmb_diagnostic"),
     path("pmb-diagnostic-login/", pmb_diagnostic_login, name="pmb_diagnostic_login"),
 ]

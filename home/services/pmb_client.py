@@ -761,6 +761,23 @@ def renew_loan(session_token: str, loan_id: int) -> dict:
     return call_pmb("pmbesOPACEmpr_renewLoan", [session_token, loan_id])
 
 
+def change_password(session_token: str, old_password: str, new_password: str) -> dict:
+    """Change le mot de passe d'un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+        old_password: Ancien mot de passe.
+        new_password: Nouveau mot de passe.
+
+    Returns:
+        Résultat de l'API PMB (dict).
+
+    Raises:
+        PMBClientError: Si l'ancien mot de passe est incorrect ou l'appel échoue.
+    """
+    return call_pmb("pmbesOPACEmpr_change_password", [session_token, old_password, new_password])
+
+
 # ───────────────────────────────
 # DIAGNOSTIC PMB
 # ───────────────────────────────

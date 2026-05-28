@@ -55,7 +55,7 @@ class RateLimitMiddleware:
     def __call__(self, request):
         """Vérifie et applique le rate limiting sur les pages sensibles."""
         path = request.path_info
-        if path in ("/login/", "/pmb-diagnostic/", "/pmb-diagnostic-login/"):
+        if path in ("/login/", "/changer-mot-de-passe/", "/pmb-diagnostic/", "/pmb-diagnostic-login/"):
             ip = request.META.get("REMOTE_ADDR", "unknown")
             key = f"ratelimit_{path}_{ip}"
             now = time.time()

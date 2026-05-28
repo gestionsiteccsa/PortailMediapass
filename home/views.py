@@ -16,6 +16,7 @@ from django.shortcuts import redirect, render
 from home.services.pmb_client import (
     PMBClientError,
     _fetch_notice_data,
+    change_password,
     get_account_infos,
     get_loan_history,
     get_loans_from_empr,
@@ -304,6 +305,58 @@ def mon_compte(request: HttpRequest) -> HttpResponse:
         logger.warning("PMB account error: %s", e)
         messages.error(request, "Impossible de charger votre compte.")
         return redirect("home:login")
+
+
+def changer_mot_de_passe_view(request: HttpRequest) -> HttpResponse:
+    """Page de changement de mot de passe.
+
+    Permet à l'emprunteur connecté de modifier son mot de passe.
+    Valide que les deux saisies du nouveau mot de passe sont identiques
+    et que le nouveau mot de passe fait au moins 6 caractères.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/changer_mot_de_passe.html`` ou redirection
+        vers le compte en cas de succès.
+    """
+    token = request.session.get("pmb_token")
+    if not token:
+        return redirect("home:login")
+
+    if request.method == "POST":
+        old_password = request.POST.get("old_password", "")
+        new_password1 = request.POST.get("new_password1", "")
+        new_password2 = request.POST.get("new_password2", "")
+
+        if not old_password or not new_password1 or not new_password2:
+            messages.error(request, "Tous les champs sont obligatoires.")
+            return render(request, "home/changer_mot_de_passe.html")
+
+        if new_password1 != new_password2:
+            messages.error(request, "Les nouveaux mots de passe ne sont pas identiques.")
+            return render(request, "home/changer_mot_de_passe.html")
+
+        if len(new_password1) < 6:
+            messages.error(
+                request,
+                "Le nouveau mot de passe doit contenir au moins 6 caractères.",
+            )
+            return render(request, "home/changer_mot_de_passe.html")
+
+        try:
+            change_password(token, old_password, new_password1)
+            messages.success(request, "Mot de passe modifié avec succès.")
+            return redirect("home:mon_compte")
+        except PMBClientError as e:
+            logger.warning("PMB change password error: %s", e)
+            messages.error(request, "Ancien mot de passe incorrect.")
+        except Exception as e:
+            logger.error("Unexpected change password error: %s", e)
+            messages.error(request, "Erreur lors du changement de mot de passe.")
+
+    return render(request, "home/changer_mot_de_passe.html")
 
 
 @staff_member_required
