@@ -32,7 +32,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if os.getenv("DJANGO_ALLOWED_HOSTS") else []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "www.portailmediapass.ccsudavesnois.fr,portailmediapass.ccsudavesnois.fr").split(",")
 
 
 # Application definition
