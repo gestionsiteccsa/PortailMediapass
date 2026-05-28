@@ -9,14 +9,14 @@ Utilisation :
 """
 import os
 
+import requests
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 import django
 
 django.setup()
 
-import requests
-
-from home.services.pmb_client import _get_cert_path
+from home.services.pmb_client import _get_cert_path  # noqa: E402
 
 cert_path = _get_cert_path()
 print(f'Cert path: {cert_path}')

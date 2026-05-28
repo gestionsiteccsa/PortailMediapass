@@ -16,7 +16,7 @@ dependencies = [
 
 [tool.ruff]
 target-version = "py312"
-line-length = 120
+line-length = 160
 exclude = [".agents/"]
 
 [tool.ruff.lint]

@@ -8,6 +8,7 @@ L'authentification se fait via un certificat client PKCS#12 (fichier .p12).
 """
 
 import atexit
+import contextlib
 import hashlib
 import os
 import tempfile
@@ -27,10 +28,8 @@ def _cleanup_pem_files():
     Appelée automatiquement au shutdown via ``atexit``.
     """
     for path in _generated_pem_paths:
-        try:
+        with contextlib.suppress(OSError):
             os.unlink(path)
-        except OSError:
-            pass
 
 
 atexit.register(_cleanup_pem_files)
@@ -628,8 +627,18 @@ def get_account_infos(session_token: str) -> dict:
             "zipcode": perso.get("address_cp") or raw.get("code_postal") or raw.get("zipcode") or "",
             "city": perso.get("address_city") or raw.get("ville") or raw.get("city") or "",
             "card_number": perso.get("cb") or raw.get("cb") or raw.get("num_carte") or raw.get("card_number") or "",
-            "membership_start": perso.get("date_adhesion") or raw.get("date_adhesion") or perso.get("adhesion_date") or raw.get("adhesion_date") or perso.get("date_inscription") or raw.get("date_inscription") or raw.get("membership_start") or "",
-            "membership_end": perso.get("date_expiration") or raw.get("date_expiration") or perso.get("expiration_date") or raw.get("expiration_date") or perso.get("date_fin_adhesion") or raw.get("date_fin_adhesion") or raw.get("membership_end") or "",
+            "membership_start": (
+                perso.get("date_adhesion") or raw.get("date_adhesion")
+                or perso.get("adhesion_date") or raw.get("adhesion_date")
+                or perso.get("date_inscription") or raw.get("date_inscription")
+                or raw.get("membership_start") or ""
+            ),
+            "membership_end": (
+                perso.get("date_expiration") or raw.get("date_expiration")
+                or perso.get("expiration_date") or raw.get("expiration_date")
+                or perso.get("date_fin_adhesion") or raw.get("date_fin_adhesion")
+                or raw.get("membership_end") or ""
+            ),
         }
     return {}
 
@@ -804,10 +813,7 @@ def test_pmb_functions() -> list[dict]:
     def should_skip(name: str) -> bool:
         """Détermine si une méthode doit être sautée (destructrice ou nécessitant auth)."""
         name_lower = name.lower()
-        for s in SKIP_METHODS:
-            if name_lower.startswith(s) or name_lower == s:
-                return True
-        return False
+        return any(name_lower.startswith(s) or name_lower == s for s in SKIP_METHODS)
 
     def test_method(group: str, method: str, *param_sets):
         """Teste une méthode PMB avec différents jeux de paramètres.
