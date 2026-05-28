@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "mediapass"
+version = "1.0.0"
+description = "Portail de bibliothèque publique — interface PMB"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.0,<6.1",
+    "requests>=2.32,<3",
+    "cryptography>=44,<49",
+    "python-dotenv>=1.0,<2",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "SIM", "D"]
+ignore = ["D100", "D104", "D107", "D203", "D212", "D213", "D401", "D404", "D406", "D407", "D413", "D415", "N806"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.12"
+strict = false
+ignore_missing_imports = true
+plugins = ["mypy_django_plugin"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "app.settings"
+testpaths = ["home/tests.py"]
+python_files = ["tests.py", "test_*.py"]

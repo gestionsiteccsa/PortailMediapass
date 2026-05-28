@@ -1,0 +1,3 @@
+# Vues
+
+::: home.views

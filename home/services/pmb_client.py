@@ -1,3 +1,12 @@
+"""Client JSON-RPC pour l'API PMB (PhpMyBibli).
+
+Fournit l'interface entre Django et le serveur PMB : authentification,
+recherche catalogue, consultation notices, gestion des comptes lecteurs,
+réservations et prolongements.
+
+L'authentification se fait via un certificat client PKCS#12 (fichier .p12).
+"""
+
 import atexit
 import hashlib
 import os
@@ -5,15 +14,18 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
-from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, NoEncryption
+from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
 from cryptography.hazmat.primitives.serialization.pkcs12 import load_key_and_certificates
 from django.conf import settings
-
 
 _generated_pem_paths: list[str] = []
 
 
 def _cleanup_pem_files():
+    """Nettoie les fichiers .pem temporaires créés lors de l'extraction du certificat.
+
+    Appelée automatiquement au shutdown via ``atexit``.
+    """
     for path in _generated_pem_paths:
         try:
             os.unlink(path)
@@ -25,10 +37,19 @@ atexit.register(_cleanup_pem_files)
 
 
 class PMBClientError(Exception):
+    """Exception levée lors d'une erreur de communication avec l'API PMB."""
     pass
 
 
 def _load_cert_from_p12() -> str:
+    """Extrait la clé privée et le certificat du fichier .p12 vers un fichier .pem temporaire.
+
+    Returns:
+        Chemin absolu vers le fichier .pem temporaire.
+
+    Raises:
+        PMBClientError: Si le fichier .p12 est introuvable, illisible ou invalide.
+    """
     p12_path = settings.PMB_CERT_PATH
     p12_password = settings.PMB_CERT_PASS
 
@@ -76,6 +97,14 @@ _cert_path_cache: str | None = None
 
 
 def _get_cert_path() -> str:
+    """Retourne le chemin du fichier .pem, avec mise en cache.
+
+    Charge le certificat une seule fois et le réutilise tant que
+    le fichier .pem temporaire existe sur le disque.
+
+    Returns:
+        Chemin absolu vers le fichier .pem.
+    """
     global _cert_path_cache
     if _cert_path_cache is None or not os.path.exists(_cert_path_cache):
         _cert_path_cache = _load_cert_from_p12()
@@ -83,6 +112,21 @@ def _get_cert_path() -> str:
 
 
 def call_pmb(method: str, params: list) -> object:
+    """Appelle une méthode JSON-RPC de l'API PMB.
+
+    Envoie une requête POST authentifiée par certificat client
+    et retourne le résultat parsé.
+
+    Args:
+        method: Nom de la méthode PMB (ex: ``pmbesSearch_simpleSearch``).
+        params: Liste des paramètres à passer à la méthode.
+
+    Returns:
+        Résultat JSON-RPC (dict, list, str selon la méthode).
+
+    Raises:
+        PMBClientError: Si le serveur répond avec une erreur HTTP ou JSON-RPC.
+    """
     payload = {
         "method": method,
         "params": params,
@@ -112,6 +156,17 @@ def call_pmb(method: str, params: list) -> object:
 
 
 def call_pmb_raw_text(method: str, params: list) -> str:
+    """Appelle une méthode PMB et retourne la réponse brute en texte.
+
+    Utilisée pour le diagnostic, ne lève pas d'exception en cas d'erreur.
+
+    Args:
+        method: Nom de la méthode PMB.
+        params: Liste des paramètres.
+
+    Returns:
+        Réponse brute formatée : ``[status_code] body``.
+    """
     payload = {
         "method": method,
         "params": params,
@@ -129,6 +184,21 @@ def call_pmb_raw_text(method: str, params: list) -> str:
 
 
 def search_notices(query: str, search_type: int = 0, page: int = 0, per_page: int = 100) -> dict:
+    """Recherche des notices dans le catalogue PMB.
+
+    Effectue une recherche simple, récupère les identifiants des notices,
+    puis fetche les détails de chaque notice **en parallèle** via un
+    ThreadPoolExecutor (10 workers).
+
+    Args:
+        query: Terme de recherche.
+        search_type: Type de recherche (0 = tous les champs).
+        page: Numéro de page (0-indexed).
+        per_page: Nombre de résultats par page (défaut: 100).
+
+    Returns:
+        Dictionnaire avec les clés ``total``, ``notices_ids`` et ``records``.
+    """
     search = call_pmb("pmbesSearch_simpleSearch", [search_type, query])
     search_id = search["searchId"]
     nb_total = search.get("nbResults", 0)
@@ -177,6 +247,16 @@ def search_notices(query: str, search_type: int = 0, page: int = 0, per_page: in
 
 
 def _fetch_notice_data(notice_id: int) -> dict:
+    """Récupère les données complètes d'une notice.
+
+    Inclut le titre, la vignette et la liste des exemplaires.
+
+    Args:
+        notice_id: Identifiant PMB de la notice.
+
+    Returns:
+        Dictionnaire représentant la notice (via ``_notice_record``).
+    """
     try:
         raw = call_pmb("pmbesNotices_fetchNoticeListFull", [[notice_id]])
     except PMBClientError:
@@ -214,6 +294,18 @@ def _fetch_notice_data(notice_id: int) -> dict:
 
 
 def _notice_record(notice_id: int, title: str, items: list, thumbnail: str = "") -> dict:
+    """Construit un dictionnaire normalisé pour une notice.
+
+    Args:
+        notice_id: Identifiant PMB de la notice.
+        title: Titre de la notice.
+        items: Liste des exemplaires.
+        thumbnail: URL de la vignette.
+
+    Returns:
+        Dictionnaire avec les clés ``notice_id``, ``title``, ``thumbnail``,
+        ``author``, ``publisher``, ``isbn``, ``summary``, ``items``.
+    """
     return {
         "notice_id": notice_id,
         "title": title,
@@ -227,6 +319,14 @@ def _notice_record(notice_id: int, title: str, items: list, thumbnail: str = "")
 
 
 def get_notice(notice_id: int) -> dict:
+    """Récupère les métadonnées d'une notice (titre, auteur, éditeur, ISBN, résumé).
+
+    Args:
+        notice_id: Identifiant PMB de la notice.
+
+    Returns:
+        Dictionnaire avec les métadonnées de la notice.
+    """
     try:
         raw = call_pmb("pmbesNotices_fetchNoticeListFull", [notice_id])
     except PMBClientError as e:
@@ -264,11 +364,28 @@ def get_notice(notice_id: int) -> dict:
 
 
 def _notice_fallback(notice_id: int, reason: str = "") -> dict:
+    """Crée un dictionnaire de notice minimal en cas d'échec de récupération.
+
+    Args:
+        notice_id: Identifiant PMB de la notice.
+        reason: Raison de l'échec (optionnelle).
+
+    Returns:
+        Dictionnaire partiel avec un titre indiquant l'état d'erreur.
+    """
     title = f"Notice {notice_id}" if not reason else f"Notice {notice_id} ({reason})"
     return {"notice_id": notice_id, "title": title, "author": "", "publisher": "", "isbn": "", "summary": ""}
 
 
 def get_items(notice_id: int) -> dict:
+    """Récupère la liste des exemplaires d'une notice.
+
+    Args:
+        notice_id: Identifiant PMB de la notice.
+
+    Returns:
+        Dictionnaire contenant une clé ``items`` avec la liste des exemplaires.
+    """
     try:
         raw = call_pmb("pmbesItems_fetch_notice_items", [notice_id])
     except PMBClientError as e:
@@ -300,6 +417,18 @@ def get_items(notice_id: int) -> dict:
 
 
 def login_emprunteur(login: str, password: str) -> str:
+    """Authentifie un emprunteur (méthode plain).
+
+    Args:
+        login: Identifiant de l'emprunteur.
+        password: Mot de passe en clair.
+
+    Returns:
+        Token de session PMB (str).
+
+    Raises:
+        PMBClientError: Si les identifiants sont incorrects.
+    """
     result = call_pmb("pmbesOPACEmpr_login", [login, password])
     if isinstance(result, str) and result:
         return result
@@ -311,6 +440,20 @@ def login_emprunteur(login: str, password: str) -> str:
 
 
 def login_emprunteur_md5(login: str, password: str) -> str:
+    """Authentifie un emprunteur (méthode MD5).
+
+    Le mot de passe est hashé en MD5 côté client avant envoi.
+
+    Args:
+        login: Identifiant de l'emprunteur.
+        password: Mot de passe en clair (hashé en MD5 avant envoi).
+
+    Returns:
+        Token de session PMB (str).
+
+    Raises:
+        PMBClientError: Si les identifiants sont incorrects.
+    """
     md5_pass = hashlib.md5(password.encode("utf-8")).hexdigest()
     result = call_pmb("pmbesOPACEmpr_login_md5", [login, md5_pass])
     if isinstance(result, str) and result:
@@ -323,6 +466,20 @@ def login_emprunteur_md5(login: str, password: str) -> str:
 
 
 def login_emprunteur_aes(login: str, password: str) -> str:
+    """Authentifie un emprunteur (méthode AES).
+
+    Le mot de passe est hashé en MD5, puis chiffré en AES côté serveur.
+
+    Args:
+        login: Identifiant de l'emprunteur.
+        password: Mot de passe en clair.
+
+    Returns:
+        Token de session PMB (str).
+
+    Raises:
+        PMBClientError: Si les identifiants sont incorrects.
+    """
     md5_pass = hashlib.md5(password.encode("utf-8")).hexdigest()
     result = call_pmb("pmbesOPACEmpr_login_aes", [login, md5_pass])
     if isinstance(result, str) and result:
@@ -335,13 +492,32 @@ def login_emprunteur_aes(login: str, password: str) -> str:
 
 
 def test_login_methods(login: str, password: str) -> list[dict]:
+    """Teste toutes les méthodes d'authentification PMB.
+
+    Utile pour le diagnostic : teste les 3 méthodes (plain, MD5, AES),
+    différentes formes de paramètres, et si un token est obtenu, teste
+    les fonctions authentifiées (compte, prêts, réservations).
+
+    Args:
+        login: Identifiant de test.
+        password: Mot de passe de test.
+
+    Returns:
+        Liste de dictionnaires ``{"label": str, "data": str}``
+        décrivant chaque appel et son résultat.
+    """
     results = []
 
     def log(label: str, data):
+        """Ajoute une entrée au journal des résultats du diagnostic."""
         data_str = str(data)
         results.append({"label": label, "data": data_str[:3000]})
 
     def safe_call(name: str, *params) -> dict:
+        """Appelle une méthode PMB sans lever d'exception.
+
+        Retourne un dictionnaire avec ``_error`` en cas d'échec.
+        """
         try:
             r = call_pmb(name, list(params))
             return r
@@ -421,10 +597,26 @@ def test_login_methods(login: str, password: str) -> list[dict]:
 
 
 def logout_emprunteur(session_token: str) -> None:
+    """Déconnecte un emprunteur (invalide le token de session).
+
+    Args:
+        session_token: Token de session PMB à invalider.
+    """
     call_pmb("pmbesOPACEmpr_logout", [session_token])
 
 
 def get_account_infos(session_token: str) -> dict:
+    """Récupère les informations personnelles d'un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+
+    Returns:
+        Dictionnaire avec les clés ``last_name``, ``first_name``, ``email``,
+        ``address``, ``zipcode``, ``city``, ``card_number``,
+        ``membership_start``, ``membership_end``.
+        Retourne un dict vide si la réponse est inattendue.
+    """
     raw = call_pmb("pmbesOPACEmpr_get_account_info", [session_token])
     if isinstance(raw, dict):
         perso = raw.get("personal_information") or {}
@@ -443,6 +635,14 @@ def get_account_infos(session_token: str) -> dict:
 
 
 def get_loans(session_token: str) -> list:
+    """Récupère la liste des prêts en cours d'un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+
+    Returns:
+        Liste des prêts (liste vide si aucun prêt ou réponse inattendue).
+    """
     result = call_pmb("pmbesOPACEmpr_list_loans", [session_token, 0, 999])
     if result is None:
         return []
@@ -461,6 +661,16 @@ def get_loans(session_token: str) -> list:
 
 
 def get_loans_from_empr(card_number: str) -> list:
+    """Récupère les prêts à partir du numéro de carte d'emprunteur.
+
+    Utilise la méthode admin ``pmbesEmpr_fetch_empr`` (nécessite les droits).
+
+    Args:
+        card_number: Numéro de carte de l'emprunteur.
+
+    Returns:
+        Liste des prêts (liste vide si non trouvé ou erreur API).
+    """
     try:
         result = call_pmb("pmbesEmpr_fetch_empr", [card_number])
         if isinstance(result, dict) and result.get("status") and isinstance(result.get("data"), dict):
@@ -473,6 +683,14 @@ def get_loans_from_empr(card_number: str) -> list:
 
 
 def get_reservations(session_token: str) -> list:
+    """Récupère la liste des réservations d'un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+
+    Returns:
+        Liste des réservations (liste vide si aucune).
+    """
     result = call_pmb("pmbesOPACEmpr_list_resas", [session_token])
     if result is None:
         return []
@@ -484,6 +702,14 @@ def get_reservations(session_token: str) -> list:
 
 
 def get_loan_history(session_token: str) -> list:
+    """Récupère l'historique des prêts d'un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+
+    Returns:
+        Liste des prêts historiques (liste vide si non disponible ou erreur).
+    """
     try:
         result = call_pmb("pmbesOPACEmpr_list_loan_history", [session_token])
         if isinstance(result, list):
@@ -496,10 +722,28 @@ def get_loan_history(session_token: str) -> list:
 
 
 def make_reservation(session_token: str, notice_id: int) -> dict:
+    """Réserve une notice pour un emprunteur.
+
+    Args:
+        session_token: Token de session PMB.
+        notice_id: Identifiant de la notice à réserver.
+
+    Returns:
+        Résultat de l'API PMB (dict).
+    """
     return call_pmb("pmbesOPACEmpr_makeReservation", [session_token, notice_id])
 
 
 def renew_loan(session_token: str, loan_id: int) -> dict:
+    """Prolonge la durée d'un prêt.
+
+    Args:
+        session_token: Token de session PMB.
+        loan_id: Identifiant du prêt à prolonger.
+
+    Returns:
+        Résultat de l'API PMB (dict).
+    """
     return call_pmb("pmbesOPACEmpr_renewLoan", [session_token, loan_id])
 
 
@@ -508,13 +752,31 @@ def renew_loan(session_token: str, loan_id: int) -> dict:
 # ───────────────────────────────
 
 def test_pmb_functions() -> list[dict]:
+    """Teste exhaustivement toutes les fonctions de l'API PMB.
+
+    Parcourt tous les groupes de méthodes PMB disponibles (Search, Items,
+    Notices, Authors, Publishers, etc.) et enregistre le résultat de
+    chaque appel. Les méthodes destructrices ou nécessitant une
+    authentification sont sautées.
+
+    Utilisé par les pages de diagnostic ``/pmb-diagnostic/``.
+
+    Returns:
+        Liste de dictionnaires ``{"label": str, "data": str}``
+        décrivant chaque appel et son résultat.
+    """
     results = []
 
     def log(label: str, data):
+        """Ajoute une entrée au journal des résultats du diagnostic."""
         data_str = str(data)
         results.append({"label": label, "data": data_str[:3000]})
 
     def safe_call(method: str, *params) -> dict:
+        """Appelle une méthode PMB sans lever d'exception.
+
+        Retourne un dict avec ``_error`` en cas d'échec.
+        """
         try:
             r = call_pmb(method, list(params))
             return r
@@ -540,6 +802,7 @@ def test_pmb_functions() -> list[dict]:
     }
 
     def should_skip(name: str) -> bool:
+        """Détermine si une méthode doit être sautée (destructrice ou nécessitant auth)."""
         name_lower = name.lower()
         for s in SKIP_METHODS:
             if name_lower.startswith(s) or name_lower == s:
@@ -547,6 +810,13 @@ def test_pmb_functions() -> list[dict]:
         return False
 
     def test_method(group: str, method: str, *param_sets):
+        """Teste une méthode PMB avec différents jeux de paramètres.
+
+        Args:
+            group: Groupe PMB (ex: ``pmbesSearch``).
+            method: Nom de la méthode (ex: ``simpleSearch``).
+            param_sets: Un ou plusieurs tuples de paramètres à tester.
+        """
         full = f"{group}_{method}"
         if should_skip(method):
             log(f"{SKIP} {full}", "SAUTE (destructeur / auth requise)")

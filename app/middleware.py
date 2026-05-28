@@ -1,3 +1,9 @@
+"""Middlewares personnalisés Django.
+
+- ``SecurityHeadersMiddleware`` : ajoute les en-têtes de sécurité CSP en production
+- ``RateLimitMiddleware`` : limite le nombre de tentatives sur les pages sensibles
+"""
+
 import time
 
 from django.conf import settings
@@ -5,10 +11,17 @@ from django.http import HttpResponseForbidden
 
 
 class SecurityHeadersMiddleware:
+    """Ajoute l'en-tête Content-Security-Policy aux réponses en production.
+
+    Limite les sources autorisées pour les scripts, styles, polices,
+    images et connexions afin de prévenir les attaques XSS.
+    """
+
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        """Ajoute les en-têtes de sécurité à la réponse."""
         response = self.get_response(request)
         if not settings.DEBUG:
             response["Content-Security-Policy"] = (
@@ -26,6 +39,12 @@ class SecurityHeadersMiddleware:
 
 
 class RateLimitMiddleware:
+    """Limite le nombre de requêtes sur les pages de connexion et diagnostic.
+
+    Autorise 10 tentatives par intervalle de 5 minutes par adresse IP.
+    Les tentatives sont stockées dans la session Django.
+    """
+
     RATE_LIMITS = {
         "login": (10, 300),
     }
@@ -34,6 +53,7 @@ class RateLimitMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        """Vérifie et applique le rate limiting sur les pages sensibles."""
         path = request.path_info
         if path in ("/login/", "/pmb-diagnostic/", "/pmb-diagnostic-login/"):
             ip = request.META.get("REMOTE_ADDR", "unknown")

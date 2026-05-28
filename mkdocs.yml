@@ -1,0 +1,65 @@
+site_name: Mediapass
+site_description: Portail de bibliothèque publique — interface PMB
+site_url: https://ccsudavesnois.github.io/mediapass/
+repo_url: https://github.com/ccsudavesnois/mediapass
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Mode sombre
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Mode clair
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_category_heading: true
+            merge_init_into_class: true
+            separate_signature: true
+            show_signature_annotations: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Architecture: architecture.md
+  - Installation: installation.md
+  - Développement: development.md
+  - Référence API:
+      - PMB Client: api/pmb_client.md
+      - Vues: api/views.md
+      - Middleware: api/middleware.md
+      - URLs: api/urls.md
+  - Déploiement: deployment.md

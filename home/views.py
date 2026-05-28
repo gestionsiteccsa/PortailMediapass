@@ -1,11 +1,17 @@
+"""Vues fonctionnelles du portail Mediapass.
+
+Chaque vue rend un template Django avec les données issues de l'API PMB.
+
+Toutes les vues sont des fonctions (pas de class-based views).
+Les vues de diagnostic sont réservées aux utilisateurs staff.
+"""
+
 import logging
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-
-from django.conf import settings
 
 from home.services.pmb_client import (
     PMBClientError,
@@ -15,7 +21,6 @@ from home.services.pmb_client import (
     get_loans_from_empr,
     get_reservations,
     login_emprunteur,
-    logout_emprunteur,
     search_notices,
     test_login_methods,
     test_pmb_functions,
@@ -25,6 +30,18 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
+    """Page d'accueil du portail.
+
+    Affiche une sélection de livres favoris (données statiques en dur)
+    et les dernières actualités du réseau.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/index.html`` avec les contextes
+        ``books_favorites`` et ``latest_news``.
+    """
     books_favorites = [
         {
             "title": "Les Gardiens du Temps",
@@ -131,6 +148,17 @@ def home(request):
 
 
 def catalogue(request):
+    """Page de recherche dans le catalogue PMB.
+
+    Lit les paramètres GET ``q`` (requête), ``type`` (type de recherche)
+    et ``page`` (numéro de page) pour interroger l'API PMB.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/catalogue.html`` avec les résultats de recherche.
+    """
     query = request.GET.get("q", "")[:500]
     raw_type = request.GET.get("type", "0")
     raw_page = request.GET.get("page", "0")
@@ -160,6 +188,18 @@ def catalogue(request):
 
 
 def notice_detail(request, notice_id: int):
+    """Page de détail d'une notice.
+
+    Affiche les informations complètes d'une notice et ses exemplaires.
+
+    Args:
+        request: Requête HTTP Django.
+        notice_id: Identifiant PMB de la notice.
+
+    Returns:
+        Template ``home/notice.html`` ou redirection vers le catalogue
+        si la notice est indisponible.
+    """
     try:
         notice = _fetch_notice_data(notice_id)
         return render(request, "home/notice.html", {
@@ -173,6 +213,18 @@ def notice_detail(request, notice_id: int):
 
 
 def login_view(request):
+    """Page de connexion emprunteur.
+
+    En POST : tente d'authentifier l'utilisateur via l'API PMB.
+    En GET : affiche le formulaire de connexion.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/login.html`` ou redirection vers le compte
+        en cas de succès.
+    """
     if request.method == "POST":
         login = request.POST.get("login", "")
         password = request.POST.get("password", "")
@@ -190,11 +242,33 @@ def login_view(request):
 
 
 def logout_view(request):
+    """Déconnexion de l'utilisateur.
+
+    Supprime le token PMB de la session Django et redirige vers l'accueil.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Redirection vers la page d'accueil.
+    """
     request.session.pop("pmb_token", None)
     return redirect("home:home")
 
 
 def mon_compte(request):
+    """Page du compte emprunteur.
+
+    Affiche les informations personnelles, les prêts en cours,
+    les réservations et l'historique des prêts.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/compte.html`` ou redirection vers la page
+        de connexion si l'utilisateur n'est pas authentifié.
+    """
     token = request.session.get("pmb_token")
     if not token:
         return redirect("home:login")
@@ -218,6 +292,18 @@ def mon_compte(request):
 
 @staff_member_required
 def pmb_diagnostic(request):
+    """Page de diagnostic PMB (staff uniquement).
+
+    Teste exhaustivement toutes les fonctions de l'API PMB et affiche
+    les résultats bruts en HTML. Inclut un formulaire de test de
+    connexion emprunteur.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        HttpResponse HTML avec les résultats du diagnostic.
+    """
     login_results = []
     test_login = request.POST.get("test_login", "")
     test_password = request.POST.get("test_password", "")
@@ -278,6 +364,17 @@ def pmb_diagnostic(request):
 
 @staff_member_required
 def pmb_diagnostic_login(request):
+    """Page de test des méthodes d'authentification PMB (staff uniquement).
+
+    Interface stylisée pour tester les 3 méthodes de connexion
+    (plain, MD5, AES) et visualiser les résultats.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        HttpResponse HTML avec les résultats de test.
+    """
     results = []
     test_login = request.POST.get("login", "")
     test_password = request.POST.get("password", "")
@@ -307,7 +404,7 @@ def pmb_diagnostic_login(request):
     html += "<div class='box'>"
     html += f"<form method='POST'><input type='hidden' name='csrfmiddlewaretoken' value='{csrf_token}'>"
     html += "<div class='form-row'><div class='form-group'>"
-    html += f"<label for='login'>Identifiant</label>"
+    html += "<label for='login'>Identifiant</label>"
     html += f"<input type='text' id='login' name='login' {login_val} placeholder='ex: 12345' required>"
     html += "</div><div class='form-group'>"
     html += "<label for='password'>Mot de passe</label>"
@@ -331,7 +428,6 @@ def pmb_diagnostic_login(request):
                 html += f'<div class="section">{label.replace("===", "").strip()}</div>'
                 continue
             css = ""
-            icon = ""
             if label.startswith("✅"):
                 css = 'class="success"'
             elif label.startswith("❌"):

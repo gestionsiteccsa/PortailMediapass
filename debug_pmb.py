@@ -1,10 +1,22 @@
+"""Script autonome de diagnostic PMB.
+
+Initialise Django, charge le certificat client, puis effectue des appels
+HTTP directs (sans passer par ``call_pmb``) pour tester la connectivité
+brute avec le serveur PMB.
+
+Utilisation :
+    python debug_pmb.py
+"""
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 import django
+
 django.setup()
 
-from home.services.pmb_client import _get_cert_path, call_pmb
 import requests
+
+from home.services.pmb_client import _get_cert_path
 
 cert_path = _get_cert_path()
 print(f'Cert path: {cert_path}')

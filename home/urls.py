@@ -1,6 +1,20 @@
+"""Configuration des URLs de l'application ``home``.
+
+Définit 8 routes nommées sous le namespace ``home:``.
+Toutes les vues sont fonctionnelles.
+"""
 from django.urls import path
 
-from home.views import catalogue, home, login_view, logout_view, mon_compte, notice_detail, pmb_diagnostic, pmb_diagnostic_login
+from home.views import (
+    catalogue,
+    home,
+    login_view,
+    logout_view,
+    mon_compte,
+    notice_detail,
+    pmb_diagnostic,
+    pmb_diagnostic_login,
+)
 
 app_name = "home"
 
