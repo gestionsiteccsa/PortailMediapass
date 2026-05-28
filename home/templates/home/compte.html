@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Mon compte - Mediapass{% endblock %}
+
+{% block content %}
+
+<section class="py-8 md:py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="font-heading text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+                    {% if account.first_name or account.last_name %}
+                        Bonjour {{ account.first_name }} {{ account.last_name }}
+                    {% else %}
+                        Mon compte
+                    {% endif %}
+                </h1>
+                <p class="text-slate-600 dark:text-slate-400 mt-1">Gérez vos prêts et réservations</p>
+            </div>
+            <a href="{% url 'home:logout' %}" 
+               class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:focus:ring-offset-dark-bg transition-colors">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Se déconnecter
+            </a>
+        </div>
+
+        {% if account.card_number or account.address or account.membership_start %}
+        <div class="mb-8 bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-dark-border">
+                <h2 class="font-heading text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Informations personnelles</h2>
+            </div>
+            <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {% if account.card_number %}
+                <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Numéro carte</p>
+                    <p class="font-mono text-sm text-slate-900 dark:text-white font-semibold mt-0.5">{{ account.card_number }}</p>
+                </div>
+                {% endif %}
+                {% if account.membership_start %}
+                <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Adhésion</p>
+                    <p class="text-sm text-slate-900 dark:text-white font-medium mt-0.5">Inscription valable du <span class="font-semibold">{{ account.membership_start }}</span> au <span class="font-semibold">{{ account.membership_end }}</span></p>
+                </div>
+                {% endif %}
+                {% if account.address or account.zipcode or account.city %}
+                <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Adresse</p>
+                    <p class="text-sm text-slate-900 dark:text-white font-medium mt-0.5">{{ account.address }}{% if account.zipcode %} - {{ account.zipcode }}{% endif %}{% if account.city %} {{ account.city }}{% endif %}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            
+            <div class="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-dark-border flex items-center justify-between">
+                    <h2 class="font-heading text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Prêts en cours
+                    </h2>
+                    {% if loans %}
+                    <span class="px-2.5 py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium rounded-full">
+                        {{ loans|length }}
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <div class="divide-y divide-slate-200 dark:divide-dark-border">
+                    {% if loans %}
+                        {% for loan in loans %}
+                        <div class="px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mt-0.5">
+                                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-slate-900 dark:text-white truncate">{{ loan.title }}</p>
+                                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                                        {% if loan.typdoc %}
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">{{ loan.typdoc }}</span>
+                                        {% endif %}
+                                        {% if loan.location %}
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">{{ loan.location }}</span>
+                                        {% endif %}
+                                        <div class="flex items-center gap-1.5">
+                                            <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400">
+                                                Retour le <span class="font-medium text-slate-700 dark:text-slate-300">{{ loan.date_retour }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="px-6 py-12 text-center">
+                            <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="text-slate-500 dark:text-slate-400">Aucun prêt en cours</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-dark-border flex items-center justify-between">
+                    <h2 class="font-heading text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
+                        Réservations
+                    </h2>
+                    {% if reservations %}
+                    <span class="px-2.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium rounded-full">
+                        {{ reservations|length }}
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <div class="divide-y divide-slate-200 dark:divide-dark-border">
+                    {% if reservations %}
+                        {% for resa in reservations %}
+                        <div class="px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mt-0.5">
+                                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-slate-900 dark:text-white truncate">{{ resa.titre }}</p>
+                                    <span class="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-xs font-medium
+                                        {% if 'disponible' in resa.statut|lower %}
+                                            bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300
+                                        {% elif 'attente' in resa.statut|lower %}
+                                            bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300
+                                        {% else %}
+                                            bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400
+                                        {% endif %}">
+                                        {{ resa.statut }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="px-6 py-12 text-center">
+                            <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                            </svg>
+                            <p class="text-slate-500 dark:text-slate-400">Aucune réservation en cours</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-6 lg:mt-8 bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-200 dark:border-dark-border flex items-center justify-between">
+                <h2 class="font-heading text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Historique des prêts
+                </h2>
+                {% if loan_history %}
+                <span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-full">
+                    {{ loan_history|length }}
+                </span>
+                {% endif %}
+            </div>
+            
+            <div class="divide-y divide-slate-200 dark:divide-dark-border">
+                {% if loan_history %}
+                    {% for item in loan_history %}
+                    <div class="px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center mt-0.5">
+                                <svg class="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-slate-900 dark:text-white truncate">{{ item.titre }}</p>
+                                <div class="flex items-center gap-1.5 mt-1">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                                        Retourné le <span class="font-medium text-slate-700 dark:text-slate-300">{{ item.date_retour }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex-shrink-0">
+                                Retourné
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="px-6 py-12 text-center">
+                        <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-slate-500 dark:text-slate-400">Aucun historique de prêt</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-8 bg-primary-50 dark:bg-primary-900/20 rounded-2xl border border-primary-200 dark:border-primary-800 p-6 md:p-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/50 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-heading font-semibold text-slate-900 dark:text-white mb-1">Besoin d'aide ?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">
+                        Pour toute question concernant vos prêts ou réservations, contactez votre bibliothèque.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

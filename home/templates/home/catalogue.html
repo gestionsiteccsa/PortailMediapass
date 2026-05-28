@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}Catalogue - Mediapass{% endblock %}
+
+{% block content %}
+
+<section class="bg-white dark:bg-dark-card border-b border-slate-200 dark:border-dark-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <h1 class="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-6 text-center">
+            Catalogue
+        </h1>
+        
+        <form method="get" action="{% url 'home:catalogue' %}" class="max-w-2xl mx-auto" role="search">
+            <label for="search-input" class="sr-only">Rechercher un document</label>
+            <div class="relative flex gap-2 mb-3">
+                <div class="relative flex-1">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="search" 
+                           id="search-input"
+                           name="q" 
+                           value="{{ query }}" 
+                           placeholder="Rechercher par titre, auteur..."
+                           autocomplete="off"
+                           class="w-full pl-12 pr-4 py-4 text-lg bg-slate-50 dark:bg-dark-bg border border-slate-200 dark:border-dark-border rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+                </div>
+                <button type="submit" 
+                        id="search-btn"
+                        class="px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-card transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 min-w-[140px]">
+                    <span id="search-btn-text" class="hidden sm:inline">Rechercher</span>
+                    <span id="search-btn-loader" class="hidden sm:hidden items-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Recherche...</span>
+                    </span>
+                    <svg id="search-btn-icon" class="w-5 h-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex justify-center gap-4 text-sm">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                    <input type="radio" name="type" value="0" {% if search_type == 0 %}checked{% endif %}>
+                    Tous
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                    <input type="radio" name="type" value="1" {% if search_type == 1 %}checked{% endif %}>
+                    Titre
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                    <input type="radio" name="type" value="2" {% if search_type == 2 %}checked{% endif %}>
+                    Auteur
+                </label>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="py-8 md:py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div id="search-loader" class="hidden py-16 text-center" role="status" aria-live="polite">
+            <div class="inline-flex flex-col items-center gap-4">
+                <div class="relative w-12 h-12">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-slate-700"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-primary-600 dark:border-primary-400 border-t-transparent animate-spin"></div>
+                </div>
+                <div class="space-y-1">
+                    <p id="search-loader-msg" class="text-slate-700 dark:text-slate-300 font-semibold text-lg transition-all duration-300">Recherche en cours...</p>
+                    <p id="search-loader-sub" class="text-slate-500 dark:text-slate-500 text-sm min-h-[1.25rem] transition-all duration-300"></p>
+                </div>
+            </div>
+        </div>
+
+        {% if query %}
+            {% if error %}
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center" role="alert">
+                    <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h2 class="font-heading text-lg font-semibold text-red-800 dark:text-red-200 mb-2">Erreur de recherche</h2>
+                    <p class="text-red-700 dark:text-red-300">{{ error }}</p>
+                </div>
+                
+            {% elif results.total %}
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <p class="text-slate-600 dark:text-slate-400">
+                        <span class="font-semibold text-slate-900 dark:text-white">{{ results.total }}</span> résultat{{ results.total|pluralize }} pour 
+                        <span class="font-semibold text-primary-600 dark:text-primary-400">"{{ query }}"</span>
+                    </p>
+                </div>
+
+                <div class="space-y-4" role="list" aria-label="Résultats de recherche">
+                    {% for record in results.records %}
+                    <article class="group bg-white dark:bg-dark-card rounded-xl border border-slate-200 dark:border-dark-border p-5 md:p-6 hover:shadow-md hover:border-primary-200 dark:hover:border-primary-800 transition-all duration-200" role="listitem">
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            {% if record.thumbnail %}
+                            <div class="flex-shrink-0 w-20 h-28 md:w-24 md:h-32 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                <img src="{{ record.thumbnail }}" alt="{{ record.title }}" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                            {% else %}
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="flex-1 min-w-0">
+                                <h2 class="font-heading text-lg md:text-xl font-semibold mb-2">
+                                    <a href="{% url 'home:notice_detail' record.notice_id %}" 
+                                       class="text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors focus:outline-none focus:underline">
+                                        {{ record.title }}
+                                    </a>
+                                </h2>
+                                
+                                {% if record.items %}
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    {% for item in record.items|slice:":3" %}
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium
+                                        {% if 'disponible' in item.status|lower %}
+                                            bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300
+                                        {% elif 'prêté' in item.status|lower or 'pret' in item.status|lower %}
+                                            bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300
+                                        {% else %}
+                                            bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400
+                                        {% endif %}">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        {{ item.location }}{% if item.section %} - {{ item.section }}{% endif %}
+                                    </span>
+                                    {% endfor %}
+                                    {% if record.items|length > 3 %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                                        +{{ record.items|length|add:"-3" }} autre{{ record.items|length|add:"-3"|pluralize }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex-shrink-0">
+                                <a href="{% url 'home:notice_detail' record.notice_id %}" 
+                                   class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors focus:outline-none focus:underline"
+                                   aria-label="Voir les détails de {{ record.title }}">
+                                    Détails
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+
+                <nav class="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
+                    {% if page > 0 %}
+                    <a href="?q={{ query }}&type={{ search_type }}&page={{ page|add:"-1" }}" 
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span class="hidden sm:inline">Précédent</span>
+                    </a>
+                    {% endif %}
+                    
+                    <span class="px-4 py-2 text-sm text-slate-600 dark:text-slate-400">
+                        Page {{ page|add:"1" }}
+                    </span>
+                    
+                    <a href="?q={{ query }}&type={{ search_type }}&page={{ page|add:"1" }}" 
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors">
+                        <span class="hidden sm:inline">Suivant</span>
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </nav>
+                
+            {% else %}
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h2 class="font-heading text-xl font-semibold text-slate-900 dark:text-white mb-2">Aucun résultat</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-6">
+                        Aucun document trouvé pour "<span class="font-medium">{{ query }}</span>"
+                    </p>
+                    <div class="bg-slate-50 dark:bg-dark-bg rounded-xl p-6 max-w-md mx-auto">
+                        <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Suggestions :</p>
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 text-left space-y-1">
+                            <li>Vérifiez l'orthographe des termes de recherche</li>
+                            <li>Essayez des mots-clés plus généraux</li>
+                            <li>Utilisez moins de filtres</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            
+        {% else %}
+            <div class="text-center py-12">
+                <svg class="w-20 h-20 text-slate-300 dark:text-slate-600 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <h2 class="font-heading text-xl font-semibold text-slate-900 dark:text-white mb-2">Recherchez dans le catalogue</h2>
+                <p class="text-slate-600 dark:text-slate-400">
+                    Saisissez un titre, un auteur ou un ISBN pour trouver votre document
+                </p>
+            </div>
+        {% endif %}
+        
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    var form = document.querySelector('form[role="search"]');
+    var loader = document.getElementById('search-loader');
+    var loaderMsg = document.getElementById('search-loader-msg');
+    var loaderSub = document.getElementById('search-loader-sub');
+    var btn = document.getElementById('search-btn');
+    var btnText = document.getElementById('search-btn-text');
+    var btnLoader = document.getElementById('search-btn-loader');
+    var btnIcon = document.getElementById('search-btn-icon');
+
+    var messages = [
+        { s: 1, msg: "On consulte l'index...", sub: "Patience, c'est un gros bouquin !" },
+        { s: 2, msg: "Le bibliothécaire court dans les rayons...", sub: "Il a oublié ses lunettes 👓" },
+        { s: 3, msg: "On vérifie sous le tapis...", sub: "Parfois les livres s'y cachent 🧹" },
+        { s: 4, msg: "On dépoussière les archives...", sub: "C'est poussièreux par ici 🕸️" },
+        { s: 5, msg: "On appelle la hotline des livres perdus...", sub: "Numéro vert : 0 800 LIVRES 📞" },
+        { s: 6, msg: "Un singe savant tape au hasard...", sub: "Il essaye de trouver Shakespeare 🐒" },
+        { s: 7, msg: "On relit tous les livres un par un...", sub: "Ça prend un peu de temps 📚" },
+        { s: 8, msg: "La connexion utilise un pigeon voyageur...", sub: "Il fait une pause café 🐦" },
+        { s: 9, msg: "On fouille dans la pile 'à classer'...", sub: "C'est le bazar chez nous 🗂️" },
+        { s: 10, msg: "Le serveur fait une sieste...", sub: "On l'a réveillé, promis 😴" },
+        { s: 11, msg: "On cherche avec une loupe géante...", sub: "On approche de la vérité 🔍" },
+        { s: 12, msg: "Ça arrive, promis juré !", sub: "Vous pouvez aller chercher un café ☕" }
+    ];
+
+    var timer = null;
+    var startTime = null;
+
+    function startLoadingMessages() {
+        startTime = Date.now();
+        if (timer) clearInterval(timer);
+        timer = setInterval(function() {
+            var elapsed = Math.floor((Date.now() - startTime) / 1000);
+            var current = null;
+            for (var i = messages.length - 1; i >= 0; i--) {
+                if (elapsed >= messages[i].s) {
+                    current = messages[i];
+                    break;
+                }
+            }
+            if (current) {
+                if (loaderMsg) loaderMsg.textContent = current.msg;
+                if (loaderSub) loaderSub.textContent = current.sub;
+            }
+        }, 4000);
+    }
+
+    if (!form) return;
+
+    form.addEventListener('submit', function() {
+        if (loader) loader.classList.remove('hidden');
+        if (btn) {
+            btn.disabled = true;
+            btn.classList.add('opacity-60', 'cursor-not-allowed');
+        }
+        if (btnText) btnText.classList.add('hidden');
+        if (btnLoader) {
+            btnLoader.classList.remove('hidden');
+            btnLoader.classList.add('inline-flex');
+        }
+        if (btnIcon) btnIcon.classList.add('hidden');
+        startLoadingMessages();
+    });
+
+    var input = document.getElementById('search-input');
+    if (input) {
+        input.focus();
+        var val = input.value;
+        input.value = '';
+        input.value = val;
+    }
+})();
+</script>
+{% endblock %}
