@@ -17,6 +17,7 @@ dependencies = [
 [tool.ruff]
 target-version = "py312"
 line-length = 120
+exclude = [".agents/"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "SIM", "D"]
@@ -29,9 +30,11 @@ convention = "google"
 python_version = "3.12"
 strict = false
 ignore_missing_imports = true
+exclude = ["\\.agents/"]
 plugins = ["mypy_django_plugin"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "app.settings"
 testpaths = ["home/tests.py"]
 python_files = ["tests.py", "test_*.py"]
+norecursedirs = [".agents"]
