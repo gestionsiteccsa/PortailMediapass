@@ -10,7 +10,7 @@ import logging
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from home.services.pmb_client import (
@@ -29,7 +29,7 @@ from home.services.pmb_client import (
 logger = logging.getLogger(__name__)
 
 
-def home(request):
+def home(request: HttpRequest) -> HttpResponse:
     """Page d'accueil du portail.
 
     Affiche une sélection de livres favoris (données statiques en dur)
@@ -151,7 +151,7 @@ def home(request):
     )
 
 
-def catalogue(request):
+def catalogue(request: HttpRequest) -> HttpResponse:
     """Page de recherche dans le catalogue PMB.
 
     Lit les paramètres GET ``q`` (requête), ``type`` (type de recherche)
@@ -195,7 +195,7 @@ def catalogue(request):
     )
 
 
-def notice_detail(request, notice_id: int):
+def notice_detail(request: HttpRequest, notice_id: int) -> HttpResponse:
     """Page de détail d'une notice.
 
     Affiche les informations complètes d'une notice et ses exemplaires.
@@ -224,7 +224,7 @@ def notice_detail(request, notice_id: int):
         return redirect("home:catalogue")
 
 
-def login_view(request):
+def login_view(request: HttpRequest) -> HttpResponse:
     """Page de connexion emprunteur.
 
     En POST : tente d'authentifier l'utilisateur via l'API PMB.
@@ -253,7 +253,7 @@ def login_view(request):
     return render(request, "home/login.html")
 
 
-def logout_view(request):
+def logout_view(request: HttpRequest) -> HttpResponse:
     """Déconnexion de l'utilisateur.
 
     Supprime le token PMB de la session Django et redirige vers l'accueil.
@@ -268,7 +268,7 @@ def logout_view(request):
     return redirect("home:home")
 
 
-def mon_compte(request):
+def mon_compte(request: HttpRequest) -> HttpResponse:
     """Page du compte emprunteur.
 
     Affiche les informations personnelles, les prêts en cours,
@@ -307,7 +307,7 @@ def mon_compte(request):
 
 
 @staff_member_required
-def pmb_diagnostic(request):
+def pmb_diagnostic(request: HttpRequest) -> HttpResponse:
     """Page de diagnostic PMB (staff uniquement).
 
     Teste exhaustivement toutes les fonctions de l'API PMB et affiche
@@ -379,7 +379,7 @@ def pmb_diagnostic(request):
 
 
 @staff_member_required
-def pmb_diagnostic_login(request):
+def pmb_diagnostic_login(request: HttpRequest) -> HttpResponse:
     """Page de test des méthodes d'authentification PMB (staff uniquement).
 
     Interface stylisée pour tester les 3 méthodes de connexion
