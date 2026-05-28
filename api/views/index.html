@@ -1,0 +1,2573 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Portail de bibliothèque publique — interface PMB">
+      
+      
+      
+        <link rel="canonical" href="https://ccsudavesnois.github.io/mediapass/api/views/">
+      
+      
+        <link rel="prev" href="../pmb_client/">
+      
+      
+        <link rel="next" href="../middleware/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Vues - Mediapass</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vues" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="Mediapass" class="md-header__button md-logo" aria-label="Mediapass" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mediapass
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vues
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ccsudavesnois/mediapass" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Mediapass" class="md-nav__button md-logo" aria-label="Mediapass" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Mediapass
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ccsudavesnois/mediapass" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pmb_client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PMB Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vues
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#home.views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#home.views-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#home.views.catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        catalogue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        home
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.login_view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        login_view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.logout_view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logout_view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.mon_compte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mon_compte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.notice_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notice_detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.pmb_diagnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pmb_diagnostic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.pmb_diagnostic_login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pmb_diagnostic_login
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../middleware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Middleware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../urls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Déploiement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#home.views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#home.views-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#home.views.catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        catalogue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        home
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.login_view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        login_view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.logout_view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logout_view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.mon_compte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mon_compte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.notice_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notice_detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.pmb_diagnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pmb_diagnostic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.views.pmb_diagnostic_login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pmb_diagnostic_login
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="vues">Vues<a class="headerlink" href="#vues" title="Permanent link">&para;</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="home.views" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">views</span>
+
+
+<a href="#home.views" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Vues fonctionnelles du portail Mediapass.</p>
+<p>Chaque vue rend un template Django avec les données issues de l'API PMB.</p>
+<p>Toutes les vues sont des fonctions (pas de class-based views).
+Les vues de diagnostic sont réservées aux utilisateurs staff.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<h3 id="home.views-classes">Classes<a href="#home.views-classes" class="headerlink" title="Permanent link">&para;</a></h3>
+<h3 id="home.views-functions">Functions<a href="#home.views-functions" class="headerlink" title="Permanent link">&para;</a></h3>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.catalogue" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">catalogue</span>
+
+
+<a href="#home.views.catalogue" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">catalogue</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page de recherche dans le catalogue PMB.</p>
+<p>Lit les paramètres GET <code>q</code> (requête), <code>type</code> (type de recherche)
+et <code>page</code> (numéro de page) pour interroger l'API PMB.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Template <code>home/catalogue.html</code> avec les résultats de recherche.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">catalogue</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page de recherche dans le catalogue PMB.</span>
+
+<span class="sd">    Lit les paramètres GET ``q`` (requête), ``type`` (type de recherche)</span>
+<span class="sd">    et ``page`` (numéro de page) pour interroger l&#39;API PMB.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Template ``home/catalogue.html`` avec les résultats de recherche.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)[:</span><span class="mi">500</span><span class="p">]</span>
+    <span class="n">raw_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    <span class="n">raw_page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">search_type</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_type</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="n">search_type</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_page</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">search_notices</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">search_type</span><span class="o">=</span><span class="n">search_type</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PMBClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PMB catalogue error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;La recherche est temporairement indisponible.&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;home/catalogue.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+            <span class="s2">&quot;search_type&quot;</span><span class="p">:</span> <span class="n">search_type</span><span class="p">,</span>
+            <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">results</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">error</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.home" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">home</span>
+
+
+<a href="#home.views.home" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page d'accueil du portail.</p>
+<p>Affiche une sélection de livres favoris (données statiques en dur)
+et les dernières actualités du réseau.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Template <code>home/index.html</code> avec les contextes</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>books_favorites</code> et <code>latest_news</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page d&#39;accueil du portail.</span>
+
+<span class="sd">    Affiche une sélection de livres favoris (données statiques en dur)</span>
+<span class="sd">    et les dernières actualités du réseau.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Template ``home/index.html`` avec les contextes</span>
+<span class="sd">        ``books_favorites`` et ``latest_news``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">books_favorites</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Les Gardiens du Temps&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Élise Moreau&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Roman&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-amber-600 to-orange-700&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;L&#39;Énigme du Cosmos&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Marc Lefèvre&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Science-fiction&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-indigo-600 to-purple-800&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Chemins de Traverse&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Clara Dubois&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Voyage&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-emerald-500 to-teal-700&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Le Jardin des Oubliés&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Pierre-André Blanc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Littérature&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-rose-500 to-pink-700&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Algorithmes et Vertiges&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Sophie Lambert&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Essai&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-cyan-600 to-blue-800&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;La Nuit des Masques&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Victor Tissot&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Polar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-slate-700 to-slate-900&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Horizons Lointains&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Anna Kéruzoré&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Aventure&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-sky-500 to-blue-700&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mémoires d&#39;Encre&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Julien Carpentier&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Histoire&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-stone-500 to-amber-800&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="n">latest_news</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Horaires d&#39;été dans les médiathèques&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;12 juin 2026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-06-12&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Infos pratiques&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category_color&quot;</span><span class="p">:</span> <span class="s2">&quot;bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-blue-500 to-cyan-600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="s2">&quot;Découvrez les nouveaux horaires d&#39;ouverture des bibliothèques du réseau pour la période estivale...&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Atelier numérique : Initiation à la BD numérique&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;8 juin 2026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-06-08&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Atelier&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category_color&quot;</span><span class="p">:</span> <span class="s2">&quot;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-emerald-500 to-green-700&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="s2">&quot;Un atelier pour apprendre à créer votre propre bande dessinée avec des outils numériques gratuits.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Exposition : Voyages en Méditerranée&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;1 juin 2026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-06-01&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Exposition&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category_color&quot;</span><span class="p">:</span> <span class="s2">&quot;bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-violet-500 to-purple-700&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="s2">&quot;Photographies et récits de voyage autour de la Méditerranée, du Maroc à la Grèce.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Nouveautés du mois de juin&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;28 mai 2026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-05-28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Sélections&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category_color&quot;</span><span class="p">:</span> <span class="s2">&quot;bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-amber-500 to-orange-600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="s2">&quot;Découvrez les dernières acquisitions du réseau : romans, documentaires et livres audio.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Concours de lecture : À vos marques, prêts, lisez !&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;20 mai 2026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;date_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-05-20&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Événement&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category_color&quot;</span><span class="p">:</span> <span class="s2">&quot;bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gradient&quot;</span><span class="p">:</span> <span class="s2">&quot;from-rose-500 to-pink-600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="s2">&quot;Participez à notre grand concours de lecture ouvert à tous les adhérents du réseau.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;home/index.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;books_favorites&quot;</span><span class="p">:</span> <span class="n">books_favorites</span><span class="p">,</span>
+            <span class="s2">&quot;latest_news&quot;</span><span class="p">:</span> <span class="n">latest_news</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.login_view" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">login_view</span>
+
+
+<a href="#home.views.login_view" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">login_view</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page de connexion emprunteur.</p>
+<p>En POST : tente d'authentifier l'utilisateur via l'API PMB.
+En GET : affiche le formulaire de connexion.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Template <code>home/login.html</code> ou redirection vers le compte</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>en cas de succès.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">login_view</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page de connexion emprunteur.</span>
+
+<span class="sd">    En POST : tente d&#39;authentifier l&#39;utilisateur via l&#39;API PMB.</span>
+<span class="sd">    En GET : affiche le formulaire de connexion.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Template ``home/login.html`` ou redirection vers le compte</span>
+<span class="sd">        en cas de succès.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">login</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">login_emprunteur</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;pmb_token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home:mon_compte&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PMBClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PMB login error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Identifiant ou mot de passe incorrect.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unexpected login error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Erreur de connexion. Veuillez réessayer.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;home/login.html&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.logout_view" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">logout_view</span>
+
+
+<a href="#home.views.logout_view" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">logout_view</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Déconnexion de l'utilisateur.</p>
+<p>Supprime le token PMB de la session Django et redirige vers l'accueil.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Redirection vers la page d'accueil.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">logout_view</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Déconnexion de l&#39;utilisateur.</span>
+
+<span class="sd">    Supprime le token PMB de la session Django et redirige vers l&#39;accueil.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Redirection vers la page d&#39;accueil.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pmb_token&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home:home&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.mon_compte" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">mon_compte</span>
+
+
+<a href="#home.views.mon_compte" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">mon_compte</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page du compte emprunteur.</p>
+<p>Affiche les informations personnelles, les prêts en cours,
+les réservations et l'historique des prêts.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Template <code>home/compte.html</code> ou redirection vers la page</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>de connexion si l'utilisateur n'est pas authentifié.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mon_compte</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page du compte emprunteur.</span>
+
+<span class="sd">    Affiche les informations personnelles, les prêts en cours,</span>
+<span class="sd">    les réservations et l&#39;historique des prêts.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Template ``home/compte.html`` ou redirection vers la page</span>
+<span class="sd">        de connexion si l&#39;utilisateur n&#39;est pas authentifié.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmb_token&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home:login&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">account</span> <span class="o">=</span> <span class="n">get_account_infos</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="n">card_number</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;card_number&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">loans</span> <span class="o">=</span> <span class="n">get_loans_from_empr</span><span class="p">(</span><span class="n">card_number</span><span class="p">)</span> <span class="k">if</span> <span class="n">card_number</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">reservations</span> <span class="o">=</span> <span class="n">get_reservations</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="n">loan_history</span> <span class="o">=</span> <span class="n">get_loan_history</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;home/compte.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="n">account</span><span class="p">,</span>
+                <span class="s2">&quot;loans&quot;</span><span class="p">:</span> <span class="n">loans</span><span class="p">,</span>
+                <span class="s2">&quot;reservations&quot;</span><span class="p">:</span> <span class="n">reservations</span><span class="p">,</span>
+                <span class="s2">&quot;loan_history&quot;</span><span class="p">:</span> <span class="n">loan_history</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">PMBClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PMB account error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Impossible de charger votre compte.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home:login&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.notice_detail" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">notice_detail</span>
+
+
+<a href="#home.views.notice_detail" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">notice_detail</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">notice_id</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page de détail d'une notice.</p>
+<p>Affiche les informations complètes d'une notice et ses exemplaires.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>notice_id</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Identifiant PMB de la notice.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Template <code>home/notice.html</code> ou redirection vers le catalogue</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>si la notice est indisponible.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">notice_detail</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">notice_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page de détail d&#39;une notice.</span>
+
+<span class="sd">    Affiche les informations complètes d&#39;une notice et ses exemplaires.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+<span class="sd">        notice_id: Identifiant PMB de la notice.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Template ``home/notice.html`` ou redirection vers le catalogue</span>
+<span class="sd">        si la notice est indisponible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">notice</span> <span class="o">=</span> <span class="n">_fetch_notice_data</span><span class="p">(</span><span class="n">notice_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;home/notice.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;notice&quot;</span><span class="p">:</span> <span class="n">notice</span><span class="p">,</span>
+                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="n">notice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="p">[])},</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">PMBClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PMB notice error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Notice indisponible.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home:catalogue&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.pmb_diagnostic" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pmb_diagnostic</span>
+
+
+<a href="#home.views.pmb_diagnostic" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">pmb_diagnostic</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page de diagnostic PMB (staff uniquement).</p>
+<p>Teste exhaustivement toutes les fonctions de l'API PMB et affiche
+les résultats bruts en HTML. Inclut un formulaire de test de
+connexion emprunteur.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HttpResponse HTML avec les résultats du diagnostic.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staff_member_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmb_diagnostic</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page de diagnostic PMB (staff uniquement).</span>
+
+<span class="sd">    Teste exhaustivement toutes les fonctions de l&#39;API PMB et affiche</span>
+<span class="sd">    les résultats bruts en HTML. Inclut un formulaire de test de</span>
+<span class="sd">    connexion emprunteur.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse HTML avec les résultats du diagnostic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">login_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">test_login</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_login&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">test_password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">test_login</span> <span class="ow">and</span> <span class="n">test_password</span><span class="p">:</span>
+        <span class="n">login_results</span> <span class="o">=</span> <span class="n">test_login_methods</span><span class="p">(</span><span class="n">test_login</span><span class="p">,</span> <span class="n">test_password</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">test_pmb_functions</span><span class="p">()</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">csrf_token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">COOKIES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;csrftoken&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#39;utf-8&#39;&gt;&lt;title&gt;Diagnostic PMB&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h1&gt;Diagnostic PMB&lt;/h1&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;div style=&#39;background:#f0f8ff;border:1px solid #ccc;padding:16px;margin:16px 0;border-radius:8px&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;</span><span class="se">\U0001f511</span><span class="s2"> Test connexion emprunteur&lt;/h3&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;form method=&#39;POST&#39;&gt;&lt;input type=&#39;hidden&#39; name=&#39;csrfmiddlewaretoken&#39; value=&#39;</span><span class="si">{</span><span class="n">csrf_token</span><span class="si">}</span><span class="s2">&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;label&gt;Login : &lt;input type=&#39;text&#39; name=&#39;test_login&#39; style=&#39;margin:4px 8px&#39;&gt;&lt;/label&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;label&gt;Mot de passe : &lt;input type=&#39;password&#39; name=&#39;test_password&#39; style=&#39;margin:4px 8px&#39;&gt;&lt;/label&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;button type=&#39;submit&#39; style=&#39;padding:4px 16px;cursor:pointer&#39;&gt;Tester&lt;/button&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/form&gt;&lt;/div&gt;&quot;</span>
+
+    <span class="k">if</span> <span class="n">login_results</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;h2&gt;Résultats connexion (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">login_results</span><span class="p">)</span><span class="si">}</span><span class="s2"> tests)&lt;/h2&gt;&lt;pre&gt;&quot;</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">login_results</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">css_class</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;✅&quot;</span><span class="p">):</span>
+                <span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39; style=&quot;color:green&quot;&#39;</span>
+            <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;❌&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;💀&quot;</span><span class="p">):</span>
+                <span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39; style=&quot;color:red&quot;&#39;</span>
+            <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;===&quot;</span><span class="p">):</span>
+                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;div style=&quot;background:#eef;padding:4px;margin-top:8px&quot;&gt;&lt;b&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&lt;/b&gt;&lt;/div&gt;&#39;</span>
+                <span class="k">continue</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&lt;div</span><span class="si">{</span><span class="n">css_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&lt;/div&gt;&quot;</span>
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">:</span>
+                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div style=&quot;margin-left:20px;font-size:0.9em&quot;&gt;</span><span class="si">{</span><span class="n">data</span><span class="p">[:</span><span class="mi">800</span><span class="p">]</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/pre&gt;&quot;</span>
+
+    <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;h2&gt;Fonctions PMB (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> appels)&lt;/h2&gt;&lt;pre&gt;&quot;</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">css_class</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;✅&quot;</span><span class="p">):</span>
+            <span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39; style=&quot;color:green&quot;&#39;</span>
+        <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;❌&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;💀&quot;</span><span class="p">):</span>
+            <span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39; style=&quot;color:red&quot;&#39;</span>
+        <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;⏭️&quot;</span><span class="p">):</span>
+            <span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39; style=&quot;color:gray&quot;&#39;</span>
+        <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;===&quot;</span><span class="p">):</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;div style=&quot;background:#eee;padding:4px;margin-top:8px&quot;&gt;&lt;b&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&lt;/b&gt;&lt;/div&gt;&#39;</span>
+            <span class="k">continue</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&lt;div</span><span class="si">{</span><span class="n">css_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&lt;/div&gt;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div style=&quot;margin-left:20px;font-size:0.9em&quot;&gt;</span><span class="si">{</span><span class="n">data</span><span class="p">[:</span><span class="mi">800</span><span class="p">]</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="home.views.pmb_diagnostic_login" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pmb_diagnostic_login</span>
+
+
+<a href="#home.views.pmb_diagnostic_login" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">pmb_diagnostic_login</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Page de test des méthodes d'authentification PMB (staff uniquement).</p>
+<p>Interface stylisée pour tester les 3 méthodes de connexion
+(plain, MD5, AES) et visualiser les résultats.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>request</code>
+            </td>
+            <td>
+                  <code><span title="django.http.HttpRequest">HttpRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Requête HTTP Django.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="django.http.HttpResponse">HttpResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>HttpResponse HTML avec les résultats de test.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/views.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staff_member_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmb_diagnostic_login</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HttpResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Page de test des méthodes d&#39;authentification PMB (staff uniquement).</span>
+
+<span class="sd">    Interface stylisée pour tester les 3 méthodes de connexion</span>
+<span class="sd">    (plain, MD5, AES) et visualiser les résultats.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request: Requête HTTP Django.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse HTML avec les résultats de test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">test_login</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">test_password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">submitted</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">test_login</span> <span class="ow">and</span> <span class="n">test_password</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">submitted</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">test_login_methods</span><span class="p">(</span><span class="n">test_login</span><span class="p">,</span> <span class="n">test_password</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="n">csrf_token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">COOKIES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;csrftoken&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">login_val</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;value=&quot;</span><span class="si">{</span><span class="n">test_login</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">if</span> <span class="n">submitted</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;!DOCTYPE html&gt;</span><span class="se">\n</span><span class="s2">&lt;html lang=&#39;fr&#39;&gt;</span><span class="se">\n</span><span class="s2">&lt;head&gt;&lt;meta charset=&#39;utf-8&#39;&gt;&lt;title&gt;Test connexion PMB&lt;/title&gt;</span><span class="se">\n</span><span class="s2">&lt;style&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;body{font-family:monospace;max-width:900px;margin:20px auto;padding:0 16px;background:#f9f9f9}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;h1</span><span class="si">{color:#333}</span><span class="s2">.box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin:16px 0}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.form-row{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:12px 0}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.form-group{display:flex;flex-direction:column}.form-group label{font-size:0.85em;color:#555;margin-bottom:4px}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.form-group input{padding:8px;border:1px solid #ccc;border-radius:4px;width:220px;font-size:1em}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;button{padding:8px 24px;background:#0066cc;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:1em}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;button:hover{background:#0052a3}.success{color:#090;font-weight:bold}.error{color:#c00}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;pre{margin:4px 0;white-space:pre-wrap;word-break:break-all}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.section{background:#eef;padding:6px 10px;margin:12px 0 4px;font-weight:bold;border-radius:4px}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.result{margin:4px 0;padding:4px 0;border-bottom:1px solid #eee}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;.result-data{color:#555;font-size:0.85em;margin-left:24px}&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h1&gt;</span><span class="se">\U0001f511</span><span class="s2"> Test connexion emprunteur PMB&lt;/h1&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;div class=&#39;box&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;form method=&#39;POST&#39;&gt;&lt;input type=&#39;hidden&#39; name=&#39;csrfmiddlewaretoken&#39; value=&#39;</span><span class="si">{</span><span class="n">csrf_token</span><span class="si">}</span><span class="s2">&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;div class=&#39;form-row&#39;&gt;&lt;div class=&#39;form-group&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;label for=&#39;login&#39;&gt;Identifiant&lt;/label&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;input type=&#39;text&#39; id=&#39;login&#39; name=&#39;login&#39; </span><span class="si">{</span><span class="n">login_val</span><span class="si">}</span><span class="s2"> placeholder=&#39;ex: 12345&#39; required&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/div&gt;&lt;div class=&#39;form-group&#39;&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;label for=&#39;password&#39;&gt;Mot de passe&lt;/label&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;input type=&#39;password&#39; id=&#39;password&#39; name=&#39;password&#39; placeholder=&#39;Mot de passe&#39; required&gt;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/div&gt;&lt;button type=&#39;submit&#39;&gt;Tester la connexion&lt;/button&gt;&lt;/div&gt;&lt;/form&gt;&lt;/div&gt;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">submitted</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div class=&quot;box&quot; style=&quot;color:#888&quot;&gt;Entrez un identifiant et mot de passe pour tester toutes les méthodes de connexion PMB.&lt;/div&gt;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;box&quot;&gt;&lt;h3&gt;Résultats pour &lt;strong&gt;</span><span class="si">{</span><span class="n">test_login</span><span class="si">}</span><span class="s1">&lt;/strong&gt;&lt;/h3&gt;&#39;</span>
+        <span class="n">has_success</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;✅&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">has_success</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p class=&quot;success&quot;&gt;✅ Au moins une méthode a fonctionné !&lt;/p&gt;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p class=&quot;error&quot;&gt;❌ Aucune méthode de connexion fonctionnelle.&lt;/p&gt;&#39;</span>
+
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;===&quot;</span><span class="p">):</span>
+                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;section&quot;&gt;</span><span class="si">{</span><span class="n">label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;===&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+                <span class="k">continue</span>
+            <span class="n">css</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;✅&quot;</span><span class="p">):</span>
+                <span class="n">css</span> <span class="o">=</span> <span class="s1">&#39;class=&quot;success&quot;&#39;</span>
+            <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;❌&quot;</span><span class="p">):</span>
+                <span class="n">css</span> <span class="o">=</span> <span class="s1">&#39;class=&quot;error&quot;&#39;</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;result&quot; </span><span class="si">{</span><span class="n">css</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">:</span>
+                <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;result-data&quot;&gt;</span><span class="si">{</span><span class="n">data</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/div&gt;&quot;</span>
+
+        <span class="k">if</span> <span class="n">has_success</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;div class=&quot;box&quot;&gt;</span>
+<span class="s2">&lt;h4&gt;Session token obtenu ?&lt;/h4&gt;</span>
+<span class="s2">&lt;p&gt;Si une ✅ apparaît ci-dessus, le login fonctionne. Le token de session peut être utilisé</span>
+<span class="s2">pour tester les autres fonctions pmbesOPACEmpr (compte, prêts, réservations).&lt;/p&gt;</span>
+<span class="s2">&lt;/div&gt;&quot;&quot;&quot;</span>
+
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;div class=&quot;box&quot; style=&quot;background:#f0f0f0&quot;&gt;</span>
+<span class="s2">&lt;p&gt;&lt;a href=&quot;/pmb-diagnostic/&quot; target=&quot;_blank&quot;&gt;→ Voir le diagnostic PMB complet&lt;/a&gt;&lt;/p&gt;</span>
+<span class="s2">&lt;p&gt;&lt;a href=&quot;/pmb-diagnostic-login/&quot;&gt;→ Réinitialiser le formulaire&lt;/a&gt;&lt;/p&gt;</span>
+<span class="s2">&lt;/div&gt;</span>
+<span class="s2">&lt;/body&gt;&lt;/html&gt;&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
