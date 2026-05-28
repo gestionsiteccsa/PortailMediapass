@@ -141,10 +141,14 @@ def home(request):
         },
     ]
 
-    return render(request, "home/index.html", {
-        "books_favorites": books_favorites,
-        "latest_news": latest_news,
-    })
+    return render(
+        request,
+        "home/index.html",
+        {
+            "books_favorites": books_favorites,
+            "latest_news": latest_news,
+        },
+    )
 
 
 def catalogue(request):
@@ -178,13 +182,17 @@ def catalogue(request):
         except PMBClientError as e:
             logger.warning("PMB catalogue error: %s", e)
             error = "La recherche est temporairement indisponible."
-    return render(request, "home/catalogue.html", {
-        "query": query,
-        "search_type": search_type,
-        "results": results,
-        "page": page,
-        "error": error,
-    })
+    return render(
+        request,
+        "home/catalogue.html",
+        {
+            "query": query,
+            "search_type": search_type,
+            "results": results,
+            "page": page,
+            "error": error,
+        },
+    )
 
 
 def notice_detail(request, notice_id: int):
@@ -202,10 +210,14 @@ def notice_detail(request, notice_id: int):
     """
     try:
         notice = _fetch_notice_data(notice_id)
-        return render(request, "home/notice.html", {
-            "notice": notice,
-            "items": {"items": notice.get("items", [])},
-        })
+        return render(
+            request,
+            "home/notice.html",
+            {
+                "notice": notice,
+                "items": {"items": notice.get("items", [])},
+            },
+        )
     except PMBClientError as e:
         logger.warning("PMB notice error: %s", e)
         messages.error(request, "Notice indisponible.")
@@ -278,12 +290,16 @@ def mon_compte(request):
         loans = get_loans_from_empr(card_number) if card_number else []
         reservations = get_reservations(token)
         loan_history = get_loan_history(token)
-        return render(request, "home/compte.html", {
-            "account": account,
-            "loans": loans,
-            "reservations": reservations,
-            "loan_history": loan_history,
-        })
+        return render(
+            request,
+            "home/compte.html",
+            {
+                "account": account,
+                "loans": loans,
+                "reservations": reservations,
+                "loan_history": loan_history,
+            },
+        )
     except PMBClientError as e:
         logger.warning("PMB account error: %s", e)
         messages.error(request, "Impossible de charger votre compte.")
@@ -334,11 +350,11 @@ def pmb_diagnostic(request):
             elif label.startswith("❌") or label.startswith("💀"):
                 css_class = ' style="color:red"'
             elif label.startswith("==="):
-                html += f"\n<div style=\"background:#eef;padding:4px;margin-top:8px\"><b>{label}</b></div>"
+                html += f'\n<div style="background:#eef;padding:4px;margin-top:8px"><b>{label}</b></div>'
                 continue
             html += f"\n<div{css_class}>{label}</div>"
             if data and data != "{}":
-                html += f"<div style=\"margin-left:20px;font-size:0.9em\">{data[:800]}</div>"
+                html += f'<div style="margin-left:20px;font-size:0.9em">{data[:800]}</div>'
         html += "</pre>"
 
     html += f"<h2>Fonctions PMB ({len(results)} appels)</h2><pre>"
@@ -353,11 +369,11 @@ def pmb_diagnostic(request):
         elif label.startswith("⏭️"):
             css_class = ' style="color:gray"'
         elif label.startswith("==="):
-            html += f"\n<div style=\"background:#eee;padding:4px;margin-top:8px\"><b>{label}</b></div>"
+            html += f'\n<div style="background:#eee;padding:4px;margin-top:8px"><b>{label}</b></div>'
             continue
         html += f"\n<div{css_class}>{label}</div>"
         if data and data != "{}":
-            html += f"<div style=\"margin-left:20px;font-size:0.9em\">{data[:800]}</div>"
+            html += f'<div style="margin-left:20px;font-size:0.9em">{data[:800]}</div>'
     html += "</pre></body></html>"
     return HttpResponse(html)
 

@@ -3,6 +3,7 @@
 Définit 8 routes nommées sous le namespace ``home:``.
 Toutes les vues sont fonctionnelles.
 """
+
 from django.urls import path
 
 from home.views import (

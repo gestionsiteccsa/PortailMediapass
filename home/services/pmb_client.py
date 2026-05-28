@@ -37,6 +37,7 @@ atexit.register(_cleanup_pem_files)
 
 class PMBClientError(Exception):
     """Exception levée lors d'une erreur de communication avec l'API PMB."""
+
     pass
 
 
@@ -53,10 +54,7 @@ def _load_cert_from_p12() -> str:
     p12_password = settings.PMB_CERT_PASS
 
     if not os.path.exists(p12_path):
-        raise PMBClientError(
-            f"Certificat introuvable : {p12_path}\n"
-            "Placez votre fichier certificat.p12 dans config/certs/"
-        )
+        raise PMBClientError(f"Certificat introuvable : {p12_path}\nPlacez votre fichier certificat.p12 dans config/certs/")
 
     try:
         with open(p12_path, "rb") as f:
@@ -70,11 +68,7 @@ def _load_cert_from_p12() -> str:
             p12_password.encode("utf-8"),
         )
     except Exception as e:
-        raise PMBClientError(
-            f"Echec du chargement du certificat .p12.\n"
-            f"Verifiez le mot de passe dans .env (PMB_CERT_PASS).\n"
-            f"Erreur : {e}"
-        )
+        raise PMBClientError(f"Echec du chargement du certificat .p12.\nVerifiez le mot de passe dans .env (PMB_CERT_PASS).\nErreur : {e}")
 
     cert_pem = certificate.public_bytes(Encoding.PEM)
     key_pem = private_key.private_bytes(
@@ -141,10 +135,7 @@ def call_pmb(method: str, params: list) -> object:
     )
 
     if not response.ok:
-        raise PMBClientError(
-            f"Erreur {response.status_code} de PMB : {response.text[:1000]}\n"
-            f"URL : {url}"
-        )
+        raise PMBClientError(f"Erreur {response.status_code} de PMB : {response.text[:1000]}\nURL : {url}")
 
     data = response.json()
 
@@ -271,14 +262,16 @@ def _fetch_notice_data(notice_id: int) -> dict:
             thumbnail = str(admin.get("thumbnail_url") or "")
             for item in n.get("noticeItems") or []:
                 if isinstance(item, dict):
-                    items.append({
-                        "location": item.get("location") or "",
-                        "section": item.get("section") or "",
-                        "status": item.get("statut") or item.get("situation") or "",
-                        "support": item.get("support") or "",
-                        "barcode": item.get("cb") or "",
-                        "cote": item.get("cote") or "",
-                    })
+                    items.append(
+                        {
+                            "location": item.get("location") or "",
+                            "section": item.get("section") or "",
+                            "status": item.get("statut") or item.get("situation") or "",
+                            "support": item.get("support") or "",
+                            "barcode": item.get("cb") or "",
+                            "cote": item.get("cote") or "",
+                        }
+                    )
             if items and items[0]["barcode"]:
                 try:
                     item_info = call_pmb("pmbesItems_fetch_item_info", [items[0]["barcode"]])
@@ -400,17 +393,21 @@ def get_items(notice_id: int) -> dict:
 
     for item in raw_items:
         if isinstance(item, dict):
-            items_list.append({
-                "location": item.get("location") or item.get("localisation") or item.get("localization") or "",
-                "status": item.get("statut") or item.get("status") or item.get("disponibilite") or "",
-                "barcode": item.get("barcode") or item.get("code_barre") or "",
-            })
+            items_list.append(
+                {
+                    "location": item.get("location") or item.get("localisation") or item.get("localization") or "",
+                    "status": item.get("statut") or item.get("status") or item.get("disponibilite") or "",
+                    "barcode": item.get("barcode") or item.get("code_barre") or "",
+                }
+            )
         elif isinstance(item, list) and len(item) >= 2:
-            items_list.append({
-                "location": str(item[1] or "") if len(item) > 1 else "",
-                "status": str(item[2] or "") if len(item) > 2 else "",
-                "barcode": "",
-            })
+            items_list.append(
+                {
+                    "location": str(item[1] or "") if len(item) > 1 else "",
+                    "status": str(item[2] or "") if len(item) > 2 else "",
+                    "barcode": "",
+                }
+            )
 
     return {"items": items_list}
 
@@ -628,16 +625,24 @@ def get_account_infos(session_token: str) -> dict:
             "city": perso.get("address_city") or raw.get("ville") or raw.get("city") or "",
             "card_number": perso.get("cb") or raw.get("cb") or raw.get("num_carte") or raw.get("card_number") or "",
             "membership_start": (
-                perso.get("date_adhesion") or raw.get("date_adhesion")
-                or perso.get("adhesion_date") or raw.get("adhesion_date")
-                or perso.get("date_inscription") or raw.get("date_inscription")
-                or raw.get("membership_start") or ""
+                perso.get("date_adhesion")
+                or raw.get("date_adhesion")
+                or perso.get("adhesion_date")
+                or raw.get("adhesion_date")
+                or perso.get("date_inscription")
+                or raw.get("date_inscription")
+                or raw.get("membership_start")
+                or ""
             ),
             "membership_end": (
-                perso.get("date_expiration") or raw.get("date_expiration")
-                or perso.get("expiration_date") or raw.get("expiration_date")
-                or perso.get("date_fin_adhesion") or raw.get("date_fin_adhesion")
-                or raw.get("membership_end") or ""
+                perso.get("date_expiration")
+                or raw.get("date_expiration")
+                or perso.get("expiration_date")
+                or raw.get("expiration_date")
+                or perso.get("date_fin_adhesion")
+                or raw.get("date_fin_adhesion")
+                or raw.get("membership_end")
+                or ""
             ),
         }
     return {}
@@ -760,6 +765,7 @@ def renew_loan(session_token: str, loan_id: int) -> dict:
 # DIAGNOSTIC PMB
 # ───────────────────────────────
 
+
 def test_pmb_functions() -> list[dict]:
     """Teste exhaustivement toutes les fonctions de l'API PMB.
 
@@ -797,17 +803,46 @@ def test_pmb_functions() -> list[dict]:
     SKIP = "⏭️"
 
     SKIP_METHODS = {
-        "delete", "update", "clean", "login", "logout", "change_password",
-        "self_", "add_", "remove_", "edit_", "empty_", "create_",
-        "import_basic", "mysqlTable", "executeProc", "hashEmprPassword",
-        "reindexRecords", "genArk", "genDocnumThumbnail",
-        "checkdelnotice", "nettoyage", "flushBannette", "fillBannette",
-        "doSync", "emptySource", "diffuseBannette", "exportBannette",
-        "sentDiffusion", "sentProduct", "sentDiffusionAuto",
-        "launchBackup", "deleteSauvPerformed",
-        "timeoutTasks", "runTasks", "checkTasks",
-        "update", "convert_to_utf8", "checkExternalAuthentication",
-        "get_loans_printer_template", "get_printers_config",
+        "delete",
+        "update",
+        "clean",
+        "login",
+        "logout",
+        "change_password",
+        "self_",
+        "add_",
+        "remove_",
+        "edit_",
+        "empty_",
+        "create_",
+        "import_basic",
+        "mysqlTable",
+        "executeProc",
+        "hashEmprPassword",
+        "reindexRecords",
+        "genArk",
+        "genDocnumThumbnail",
+        "checkdelnotice",
+        "nettoyage",
+        "flushBannette",
+        "fillBannette",
+        "doSync",
+        "emptySource",
+        "diffuseBannette",
+        "exportBannette",
+        "sentDiffusion",
+        "sentProduct",
+        "sentDiffusionAuto",
+        "launchBackup",
+        "deleteSauvPerformed",
+        "timeoutTasks",
+        "runTasks",
+        "checkTasks",
+        "update",
+        "convert_to_utf8",
+        "checkExternalAuthentication",
+        "get_loans_printer_template",
+        "get_printers_config",
     }
 
     def should_skip(name: str) -> bool:
@@ -1103,10 +1138,20 @@ def test_pmb_functions() -> list[dict]:
 
     # ── pmbesChklnk (sauf update) ──
     log("\n=== pmbesChklnk ===", "")
-    for chk in ["check_records", "check_records_thumbnail", "check_records_custom_fields",
-                 "check_records_enum", "check_bulletins", "check_custom_fields_etatcoll",
-                 "check_authors", "check_publishers", "check_collections", "check_subcollections",
-                 "check_authorities_thumbnail", "check_editorial_custom_fields"]:
+    for chk in [
+        "check_records",
+        "check_records_thumbnail",
+        "check_records_custom_fields",
+        "check_records_enum",
+        "check_bulletins",
+        "check_custom_fields_etatcoll",
+        "check_authors",
+        "check_publishers",
+        "check_collections",
+        "check_subcollections",
+        "check_authorities_thumbnail",
+        "check_editorial_custom_fields",
+    ]:
         test_method("pmbesChklnk", chk, (50,))
 
     # ── pmbesPNB ──
@@ -1114,9 +1159,16 @@ def test_pmb_functions() -> list[dict]:
 
     # ── pmbesAccessRights ──
     log("\n=== pmbesAccessRights ===", "")
-    for ar in ["user_notice", "empr_notice", "empr_docnum", "empr_contribution_area",
-                "empr_contribution_scenario", "contribution_moderator_empr",
-                "empr_cms_section", "empr_cms_article"]:
+    for ar in [
+        "user_notice",
+        "empr_notice",
+        "empr_docnum",
+        "empr_contribution_area",
+        "empr_contribution_scenario",
+        "contribution_moderator_empr",
+        "empr_cms_section",
+        "empr_cms_article",
+    ]:
         test_method("pmbesAccessRights", ar, (NOTICE_ID,))
 
     # ── pmbesIndex ──
