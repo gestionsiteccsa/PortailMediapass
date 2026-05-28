@@ -778,6 +778,35 @@ def change_password(session_token: str, old_password: str, new_password: str) ->
     return call_pmb("pmbesOPACEmpr_change_password", [session_token, old_password, new_password])
 
 
+def reset_password(card_number: str, new_password: str) -> dict:
+    """Réinitialise le mot de passe d'un emprunteur via l'API admin PMB.
+
+    Tente d'appeler ``pmbesEmpr_update_empr`` avec différents formats
+    de paramètres pour mettre à jour le mot de passe sans connaître
+    l'ancien. Nécessite que le certificat client ait les droits admin.
+
+    Args:
+        card_number: Numéro de carte de l'emprunteur.
+        new_password: Nouveau mot de passe à définir.
+
+    Returns:
+        Résultat de l'API PMB (dict).
+
+    Raises:
+        PMBClientError: Si l'appel échoue (API non disponible, droits insuffisants).
+    """
+    for params in (
+        [card_number, {"password": new_password}],
+        [card_number, new_password],
+        {"empr_id": card_number, "password": new_password},
+    ):
+        try:
+            return call_pmb("pmbesEmpr_update_empr", [card_number, {"password": new_password}])
+        except PMBClientError:
+            continue
+    raise PMBClientError("Impossible de réinitialiser le mot de passe via l'API PMB.")
+
+
 # ───────────────────────────────
 # DIAGNOSTIC PMB
 # ───────────────────────────────

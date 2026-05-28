@@ -10,8 +10,11 @@ import logging
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.mail import send_mail
+from django.core.signing import BadSignature, SignatureExpired, TimestampSigner
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from home.services.pmb_client import (
     PMBClientError,
@@ -22,6 +25,7 @@ from home.services.pmb_client import (
     get_loans_from_empr,
     get_reservations,
     login_emprunteur,
+    reset_password,
     search_notices,
     test_login_methods,
     test_pmb_functions,
@@ -357,6 +361,130 @@ def changer_mot_de_passe_view(request: HttpRequest) -> HttpResponse:
             messages.error(request, "Erreur lors du changement de mot de passe.")
 
     return render(request, "home/changer_mot_de_passe.html")
+
+
+def mot_de_passe_oublie_view(request: HttpRequest) -> HttpResponse:
+    """Page de demande de réinitialisation de mot de passe.
+
+    En POST : valide le numéro de carte et l'email, génère un token
+    signé, envoie un email avec un lien de réinitialisation.
+
+    Args:
+        request: Requête HTTP Django.
+
+    Returns:
+        Template ``home/mot_de_passe_oublie.html``.
+    """
+    if request.method == "POST":
+        card_number = request.POST.get("card_number", "").strip()
+        email = request.POST.get("email", "").strip()
+
+        if not card_number or not email:
+            messages.error(request, "Tous les champs sont obligatoires.")
+            return render(request, "home/mot_de_passe_oublie.html")
+
+        token = TimestampSigner().sign(f"{card_number}:{email}")
+        reset_url = request.build_absolute_uri(
+            reverse("home:reinitialiser_mot_de_passe", args=[token]),
+        )
+
+        try:
+            send_mail(
+                subject="Réinitialisation de votre mot de passe Mediapass",
+                message=(
+                    f"Bonjour,\n\n"
+                    f"Vous avez demandé la réinitialisation de votre mot de passe.\n\n"
+                    f"Cliquez sur le lien ci-dessous pour choisir un nouveau mot de passe :\n"
+                    f"{reset_url}\n\n"
+                    f"Ce lien est valable 1 heure.\n\n"
+                    f"Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.\n\n"
+                    f"L'équipe Mediapass"
+                ),
+                html_message=(
+                    f"<h2>Réinitialisation de votre mot de passe</h2>"
+                    f"<p>Vous avez demandé la réinitialisation de votre mot de passe.</p>"
+                    f"<p><a href='{reset_url}' "
+                    f"style='display:inline-block;padding:12px 24px;background:#4f46e5;color:#fff;"
+                    f"text-decoration:none;border-radius:8px;font-weight:bold;'>"
+                    f"Réinitialiser mon mot de passe</a></p>"
+                    f"<p>Ce lien est valable 1 heure.</p>"
+                    f"<p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>"
+                ),
+                from_email=None,
+                recipient_list=[email],
+                fail_silently=False,
+            )
+            messages.success(
+                request,
+                "Un email de réinitialisation vous a été envoyé si cette carte existe.",
+            )
+        except Exception as e:
+            logger.error("Email send error: %s", e)
+            messages.error(
+                request,
+                "Erreur lors de l'envoi de l'email. Veuillez réessayer.",
+            )
+
+        return render(request, "home/mot_de_passe_oublie.html")
+
+    return render(request, "home/mot_de_passe_oublie.html")
+
+
+def reinitialiser_mot_de_passe_view(request: HttpRequest, token: str) -> HttpResponse:
+    """Page de réinitialisation du mot de passe.
+
+    Valide le token signé, puis en POST applique le nouveau mot de passe
+    via l'API PMB (``reset_password``).
+
+    Args:
+        request: Requête HTTP Django.
+        token: Token signé contenant ``carte:email``.
+
+    Returns:
+        Template ``home/reinitialiser_mot_de_passe.html`` ou redirection
+        vers la connexion en cas de succès.
+    """
+    try:
+        data = TimestampSigner().unsign(token, max_age=3600)
+        card_number, email = data.split(":", 1)
+    except SignatureExpired:
+        messages.error(request, "Ce lien a expiré. Refaites une demande.")
+        return redirect("home:mot_de_passe_oublie")
+    except (BadSignature, ValueError):
+        messages.error(request, "Lien invalide.")
+        return redirect("home:mot_de_passe_oublie")
+
+    if request.method == "POST":
+        new_password1 = request.POST.get("new_password1", "")
+        new_password2 = request.POST.get("new_password2", "")
+
+        if not new_password1 or not new_password2:
+            messages.error(request, "Tous les champs sont obligatoires.")
+            return render(request, "home/reinitialiser_mot_de_passe.html")
+
+        if new_password1 != new_password2:
+            messages.error(request, "Les mots de passe ne sont pas identiques.")
+            return render(request, "home/reinitialiser_mot_de_passe.html")
+
+        if len(new_password1) < 6:
+            messages.error(request, "Le mot de passe doit contenir au moins 6 caractères.")
+            return render(request, "home/reinitialiser_mot_de_passe.html")
+
+        try:
+            reset_password(card_number, new_password1)
+            messages.success(request, "Mot de passe réinitialisé. Connectez-vous.")
+            return redirect("home:login")
+        except PMBClientError as e:
+            logger.warning("PMB reset password error: %s", e)
+            messages.error(
+                request,
+                "La réinitialisation a échoué. Contactez votre bibliothèque.",
+            )
+        except Exception as e:
+            logger.error("Unexpected reset password error: %s", e)
+            messages.error(request, "Erreur technique. Veuillez réessayer.")
+
+    return render(request, "home/reinitialiser_mot_de_passe.html")
 
 
 @staff_member_required
