@@ -712,6 +712,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#home.services.pmb_client.reset_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reset_password
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#home.services.pmb_client.search_notices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1129,6 +1140,17 @@
     <span class="md-ellipsis">
       
         renew_loan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home.services.pmb_client.reset_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reset_password
       
     </span>
   </a>
@@ -3553,6 +3575,179 @@ et retourne le résultat parsé.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="home.services.pmb_client.reset_password" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">reset_password</span>
+
+
+<a href="#home.services.pmb_client.reset_password" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">reset_password</span><span class="p">(</span><span class="n">card_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Réinitialise le mot de passe d'un emprunteur via l'API admin PMB.</p>
+<p>Tente d'appeler <code>pmbesEmpr_update_empr</code> avec différents formats
+de paramètres pour mettre à jour le mot de passe sans connaître
+l'ancien. Nécessite que le certificat client ait les droits admin.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>card_number</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Numéro de carte de l'emprunteur.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>new_password</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nouveau mot de passe à définir.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Résultat de l'API PMB (dict).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="PMBClientError (home.services.pmb_client.PMBClientError)" href="#home.services.pmb_client.PMBClientError">PMBClientError</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Si l'appel échoue (API non disponible, droits insuffisants).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>home/services/pmb_client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">781</span>
+<span class="normal">782</span>
+<span class="normal">783</span>
+<span class="normal">784</span>
+<span class="normal">785</span>
+<span class="normal">786</span>
+<span class="normal">787</span>
+<span class="normal">788</span>
+<span class="normal">789</span>
+<span class="normal">790</span>
+<span class="normal">791</span>
+<span class="normal">792</span>
+<span class="normal">793</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span>
+<span class="normal">805</span>
+<span class="normal">806</span>
+<span class="normal">807</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reset_password</span><span class="p">(</span><span class="n">card_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Réinitialise le mot de passe d&#39;un emprunteur via l&#39;API admin PMB.</span>
+
+<span class="sd">    Tente d&#39;appeler ``pmbesEmpr_update_empr`` avec différents formats</span>
+<span class="sd">    de paramètres pour mettre à jour le mot de passe sans connaître</span>
+<span class="sd">    l&#39;ancien. Nécessite que le certificat client ait les droits admin.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        card_number: Numéro de carte de l&#39;emprunteur.</span>
+<span class="sd">        new_password: Nouveau mot de passe à définir.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Résultat de l&#39;API PMB (dict).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        PMBClientError: Si l&#39;appel échoue (API non disponible, droits insuffisants).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="p">[</span><span class="n">card_number</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">}],</span>
+        <span class="p">[</span><span class="n">card_number</span><span class="p">,</span> <span class="n">new_password</span><span class="p">],</span>
+        <span class="p">{</span><span class="s2">&quot;empr_id&quot;</span><span class="p">:</span> <span class="n">card_number</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">},</span>
+    <span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">call_pmb</span><span class="p">(</span><span class="s2">&quot;pmbesEmpr_update_empr&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">card_number</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">}])</span>
+        <span class="k">except</span> <span class="n">PMBClientError</span><span class="p">:</span>
+            <span class="k">continue</span>
+    <span class="k">raise</span> <span class="n">PMBClientError</span><span class="p">(</span><span class="s2">&quot;Impossible de réinitialiser le mot de passe via l&#39;API PMB.&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="home.services.pmb_client.search_notices" class="doc doc-heading">
             <span class="doc doc-object-name doc-function-name">search_notices</span>
 
@@ -4173,36 +4368,7 @@ authentification sont sautées.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>home/services/pmb_client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 786</span>
-<span class="normal"> 787</span>
-<span class="normal"> 788</span>
-<span class="normal"> 789</span>
-<span class="normal"> 790</span>
-<span class="normal"> 791</span>
-<span class="normal"> 792</span>
-<span class="normal"> 793</span>
-<span class="normal"> 794</span>
-<span class="normal"> 795</span>
-<span class="normal"> 796</span>
-<span class="normal"> 797</span>
-<span class="normal"> 798</span>
-<span class="normal"> 799</span>
-<span class="normal"> 800</span>
-<span class="normal"> 801</span>
-<span class="normal"> 802</span>
-<span class="normal"> 803</span>
-<span class="normal"> 804</span>
-<span class="normal"> 805</span>
-<span class="normal"> 806</span>
-<span class="normal"> 807</span>
-<span class="normal"> 808</span>
-<span class="normal"> 809</span>
-<span class="normal"> 810</span>
-<span class="normal"> 811</span>
-<span class="normal"> 812</span>
-<span class="normal"> 813</span>
-<span class="normal"> 814</span>
-<span class="normal"> 815</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 815</span>
 <span class="normal"> 816</span>
 <span class="normal"> 817</span>
 <span class="normal"> 818</span>
@@ -4648,7 +4814,36 @@ authentification sont sautées.</p>
 <span class="normal">1258</span>
 <span class="normal">1259</span>
 <span class="normal">1260</span>
-<span class="normal">1261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_pmb_functions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="normal">1261</span>
+<span class="normal">1262</span>
+<span class="normal">1263</span>
+<span class="normal">1264</span>
+<span class="normal">1265</span>
+<span class="normal">1266</span>
+<span class="normal">1267</span>
+<span class="normal">1268</span>
+<span class="normal">1269</span>
+<span class="normal">1270</span>
+<span class="normal">1271</span>
+<span class="normal">1272</span>
+<span class="normal">1273</span>
+<span class="normal">1274</span>
+<span class="normal">1275</span>
+<span class="normal">1276</span>
+<span class="normal">1277</span>
+<span class="normal">1278</span>
+<span class="normal">1279</span>
+<span class="normal">1280</span>
+<span class="normal">1281</span>
+<span class="normal">1282</span>
+<span class="normal">1283</span>
+<span class="normal">1284</span>
+<span class="normal">1285</span>
+<span class="normal">1286</span>
+<span class="normal">1287</span>
+<span class="normal">1288</span>
+<span class="normal">1289</span>
+<span class="normal">1290</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_pmb_functions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Teste exhaustivement toutes les fonctions de l&#39;API PMB.</span>
 
 <span class="sd">    Parcourt tous les groupes de méthodes PMB disponibles (Search, Items,</span>
